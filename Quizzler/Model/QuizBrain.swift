@@ -25,9 +25,11 @@ struct QuizBrain {
     ];
     
     var questionNumber = 0;
+    var scoreOfUser = 0;
     
-    func checkAnswer(_ userAnswer : String) -> Bool {
+    mutating func checkAnswer(_ userAnswer : String) -> Bool {
         if(arrays[questionNumber].answer == userAnswer){
+            increaseScore();
             return true;
         }
         return false;
@@ -46,6 +48,15 @@ struct QuizBrain {
             questionNumber+=1;
         }else {
             questionNumber = 0;
+            scoreOfUser = 0;
         }
+    }
+    
+    func getScore() -> Int {
+        return scoreOfUser;
+    }
+    
+    mutating func increaseScore() {
+        scoreOfUser+=1;
     }
 }
