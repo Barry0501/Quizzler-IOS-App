@@ -1,21 +1,15 @@
 //
-//  ViewController.swift
+//  QuizBrain.swift
 //  Quizzler
 //
-//  Created by Barry on 4/6/20.
+//  Created by Barry on 4/7/20.
 //  Copyright © 2020 Barry. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
-
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var trueBtn: UIButton!
-    @IBOutlet weak var falseBtn: UIButton!
-    
-    var arrays = [
+struct QuizBrain {
+    let arrays = [
         Question(q: "A slug's blood is green.", a: "True"),
         Question(q: "Approximately one quarter of human bones are in the feet.", a: "True"),
         Question(q: "The total surface area of two human lungs is approximately 70 square metres.", a: "True"),
@@ -32,40 +26,26 @@ class ViewController: UIViewController {
     
     var questionNumber = 0;
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-       
-        updateUI();
-        
-        progressBar.progress = 0;
+    func checkAnswer(_ userAnswer : String) -> Bool {
+        if(arrays[questionNumber].answer == userAnswer){
+            return true;
+        }
+        return false;
     }
     
+    func getQuestionText() -> String {
+        return arrays[questionNumber].question;
+    }
     
-    @IBAction func answerBtnPressed(_ sender: UIButton) {
-        let userAnswer = sender.currentTitle;
-        let actualAnswer = arrays[questionNumber].answer;
-        
-        if(userAnswer == actualAnswer){
-            sender.backgroundColor = UIColor.green;
-        }else{
-            sender.backgroundColor = UIColor.red;
-        }
-        
-        
+    func getProgress() -> Float {
+        return Float(questionNumber + 1) / Float(arrays.count);
+    }
+    
+    mutating func nextQuestion(){
         if(questionNumber < arrays.count - 1){
             questionNumber+=1;
         }else {
             questionNumber = 0;
         }
-        
-        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
-    }
-    
-    @objc func updateUI(){
-        questionLabel.text = arrays[questionNumber].question;
-        trueBtn.backgroundColor = UIColor.clear;
-        falseBtn.backgroundColor = UIColor.clear;
-        progressBar.progress = Float(questionNumber + 1) / Float(arrays.count);
     }
 }
-
